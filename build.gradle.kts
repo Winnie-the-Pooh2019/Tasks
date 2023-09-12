@@ -25,6 +25,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    testImplementation("io.rest-assured:spring-mock-mvc:3.0.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 //    implementation("org.flywaydb:flyway-core")

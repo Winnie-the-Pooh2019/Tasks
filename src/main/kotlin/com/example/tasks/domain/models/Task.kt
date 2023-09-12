@@ -22,4 +22,12 @@ data class Task(
 
     @Column("is_done")
     val isDone: Boolean = false
-)
+) {
+    companion object {
+        fun now(): LocalDateTime {
+            val now = LocalDateTime.now()
+
+            return now.minusNanos(now.nano.toLong())
+        }
+    }
+}
