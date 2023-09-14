@@ -4,8 +4,8 @@ import com.example.tasks.domain.dto.TaskDto
 import com.example.tasks.domain.models.Task
 import com.example.tasks.domain.services.TaskService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/task")
@@ -13,8 +13,11 @@ class TaskController(
     @Autowired
     private val taskService: TaskService
 ) {
+    @ExceptionHandler()
+
     @PostMapping("create")
     @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
     fun createTask(@RequestBody taskDto: TaskDto): Task = taskService.createTask(taskDto)
 
     @PutMapping("put")
