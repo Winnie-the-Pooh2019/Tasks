@@ -4,8 +4,11 @@ import com.example.tasks.domain.dto.TaskDto
 import com.example.tasks.domain.models.Task
 import com.example.tasks.domain.services.TaskService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.relational.core.conversion.DbActionExecutionException
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import java.lang.IllegalArgumentException
 
 @RestController
 @RequestMapping("/api/task")
@@ -13,7 +16,11 @@ class TaskController(
     @Autowired
     private val taskService: TaskService
 ) {
-    @ExceptionHandler()
+    @ExceptionHandler(NoSuchElementException::class)
+    fun handleNoSuchElement(exception: NoSuchElementException) = ResponseEntity(exception.message, HttpStatus.NOT_FOUND)
+
+    @ExceptionHandler(DbActionExecutionException::class)
+    fun handleIllegalArgument(exception: IllegalArgumentException) = ResponseEntity(exception.message, HttpStatus.CONFLICT)
 
     @PostMapping("create")
     @ResponseBody

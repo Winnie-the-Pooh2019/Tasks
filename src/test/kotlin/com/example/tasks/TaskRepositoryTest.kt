@@ -1,6 +1,6 @@
 package com.example.tasks
 
-import com.example.tasks.domain.TaskRepository
+import com.example.tasks.domain.repo.TaskRepository
 import com.example.tasks.domain.models.Task
 import io.github.oshai.kotlinlogging.KLogger
 import org.assertj.core.api.Assertions.assertThat
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.transaction.annotation.Transactional
+import org.springframework.data.relational.core.conversion.DbActionExecutionException
 
 @SpringBootTest
 class TaskRepositoryTest(
@@ -39,6 +39,7 @@ class TaskRepositoryTest(
         assertThat(reloaded.name).isEqualTo(task.name)
     }
 
+//    DbActionExecutionException
     @Test
     fun canNotSaveTheSame() {
         val task = Task(
@@ -48,9 +49,9 @@ class TaskRepositoryTest(
 
         taskRepository.save(task)
 
-        val message = assertThrows<RuntimeException> { taskRepository.save(task) }
+        val message = assertThrows<DbActionExecutionException> { taskRepository.save(task) }
 
-        logger.warn { "Exception message: $message" }
+        logger.warn { "Exception message: ${message.stackTraceToString()}" }
 
         assertThat(message).isNotNull()
     }
@@ -120,6 +121,22 @@ class TaskRepositoryTest(
     }
 
     @Test
+    fun canNotUpdateName() {
+        val task = Task(
+            name = "I want to pass test",
+            description = "description",
+            creationDate = Task.now()
+        )
+        val newName = "new name"
+
+        taskRepository.save(task)
+        taskRepository.updateNameById(newName, Task.now(), "fake id")
+        val message = assertThrows<Exception> { taskRepository.findById("fake id").get() }
+
+        logger.warn { message }
+    }
+
+    @Test
     fun canUpdateDescription() {
         val task = Task(
             name = "I want to pass test",
@@ -148,5 +165,43 @@ class TaskRepositoryTest(
         val newSaved = taskRepository.findById(saved.id!!).get()
 
         assertThat(newSaved.isDone).isTrue()
+    }
+
+    // no such element exception
+    @Test
+    fun canNotUpdateDone() {
+        val task = Task(
+            name = "I want to pass test",
+            description = "description",
+            creationDate = Task.now()
+        )
+
+        taskRepository.save(task)
+        taskRepository.updateIsDoneBy(true, Task.now(), "fake id")
+        val message = assertThrows<NoSuchElementException> { taskRepository.findById("fake id").get() }
+
+        logger.warn { message }
+    }
+
+    @Test
+    fun updateSaveTest() {
+        val task = Task(
+            name = "I want to pass test",
+            description = "description",
+            creationDate = Task.now()
+        )
+
+        val saved = taskRepository.save(task)
+
+        logger.warn { saved }
+
+        val newTask = Task(
+            id = saved.id,
+            name = "new name",
+            description = "new description",
+            creationDate = saved.creationDate
+        )
+
+        logger.warn { taskRepository.save(newTask) }
     }
 }

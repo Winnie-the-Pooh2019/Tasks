@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список Задач</title>
+    <!-- Подключение библиотеки HTMX -->
+    <script src="https://unpkg.com/htmx.org@1.6.1/dist/htmx.js"></script>
+</head>
+<body>
+<h1>Список Задач</h1>
+
+<!-- Фильтр и поиск -->
+<div>
+    <label for="search">Поиск:</label>
+    <input type="text" id="search" hx-trigger="keyup delay:500ms" hx-get="/tasks?search={value}">
+</div>
+
+<!-- Таблица с задачами -->
+<table>
+    <thead>
+    <tr>
+        <th hx-trigger="click" hx-get="/tasks?sort=title">Название</th>
+        <th hx-trigger="click" hx-get="/tasks?sort=description">Описание</th>
+        <th hx-trigger="click" hx-get="/tasks?sort=dueDate">Дата завершения</th>
+        <th hx-trigger="click" hx-get="/tasks?sort=priority">Приоритет</th>
+        <th hx-trigger="click" hx-get="/tasks?sort=completed">Выполнено</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Здесь будут отображаться строки таблицы -->
+    <tr hx-get="/task/{id}" hx-target="closest tr" hx-swap="outerHTML" hx-include="false" hx-indicator="dots">
+        <td>{title}</td>
+        <td>{description}</td>
+        <td>{dueDate}</td>
+        <td>{priority}</td>
+        <td>
+            <input type="checkbox" hx-post="/toggle/{id}" checked="{completed}">
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Пагинация -->
+<div>
+    <button hx-get="/tasks?page=1">1</button>
+    <button hx-get="/tasks?page=2">2</button>
+    <!-- Добавьте кнопки для других страниц по мере необходимости -->
+</div>
+</body>
+</html>
