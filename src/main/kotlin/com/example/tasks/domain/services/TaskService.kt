@@ -15,6 +15,8 @@ class TaskService(
     @Autowired
     private val taskRepository: TaskRepository
 ) {
+    fun findAll(): List<Task> = taskRepository.findAll().toList()
+    
     @Throws(DbActionExecutionException::class)
     fun createTask(taskDto: TaskDto): Task = taskRepository.save(taskDto.toModel())
 

@@ -1,16 +1,15 @@
 package com.example.tasks
 
-import com.example.tasks.domain.repo.TaskRepository
 import com.example.tasks.domain.models.Task
+import com.example.tasks.domain.repo.TaskRepository
 import io.github.oshai.kotlinlogging.KLogger
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.relational.core.conversion.DbActionExecutionException
+import org.springframework.transaction.annotation.Transactional
 
 @SpringBootTest
 class TaskRepositoryTest(
@@ -20,11 +19,8 @@ class TaskRepositoryTest(
     private val logger: KLogger
 ) {
 
-    @BeforeEach
-    @AfterEach
-    fun setUp() = taskRepository.deleteAll()
-
     @Test
+    @Transactional
     fun canSave() {
         val task = Task(
             name = "creating task test",
@@ -39,8 +35,8 @@ class TaskRepositoryTest(
         assertThat(reloaded.name).isEqualTo(task.name)
     }
 
-//    DbActionExecutionException
     @Test
+    @Transactional
     fun canNotSaveTheSame() {
         val task = Task(
             name = "creating task test",
@@ -57,6 +53,7 @@ class TaskRepositoryTest(
     }
 
     @Test
+    @Transactional
     fun canFindByName() {
         val task = Task(
             name = "I want to pass test",
@@ -71,6 +68,7 @@ class TaskRepositoryTest(
     }
 
     @Test
+    @Transactional
     fun canFindById() {
         val task = Task(
             name = "I want to pass test",
@@ -85,6 +83,7 @@ class TaskRepositoryTest(
     }
 
     @Test
+    @Transactional
     fun canFindByDone() {
         val tasks = listOf(
             Task(name = "first", creationDate = Task.now()),
@@ -105,6 +104,7 @@ class TaskRepositoryTest(
     }
 
     @Test
+    @Transactional
     fun canUpdateName() {
         val task = Task(
             name = "I want to pass test",
@@ -121,6 +121,7 @@ class TaskRepositoryTest(
     }
 
     @Test
+    @Transactional
     fun canNotUpdateName() {
         val task = Task(
             name = "I want to pass test",
@@ -137,6 +138,7 @@ class TaskRepositoryTest(
     }
 
     @Test
+    @Transactional
     fun canUpdateDescription() {
         val task = Task(
             name = "I want to pass test",
@@ -153,6 +155,7 @@ class TaskRepositoryTest(
     }
 
     @Test
+    @Transactional
     fun canUpdateDone() {
         val task = Task(
             name = "I want to pass test",
@@ -167,8 +170,8 @@ class TaskRepositoryTest(
         assertThat(newSaved.isDone).isTrue()
     }
 
-    // no such element exception
     @Test
+    @Transactional
     fun canNotUpdateDone() {
         val task = Task(
             name = "I want to pass test",
@@ -184,6 +187,7 @@ class TaskRepositoryTest(
     }
 
     @Test
+    @Transactional
     fun updateSaveTest() {
         val task = Task(
             name = "I want to pass test",

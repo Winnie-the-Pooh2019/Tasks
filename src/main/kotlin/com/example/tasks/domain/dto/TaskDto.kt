@@ -7,7 +7,7 @@ data class TaskDto(
     val id: String? = null,
     val name: String,
     val description: String? = null,
-    val creationDate: String,
+    val creationDate: String = LocalDateTime.now().toString(),
     val modificationDate: String? = null,
     val isDone: Boolean = false
 ) {
@@ -16,7 +16,7 @@ data class TaskDto(
         name = name,
         description = description,
         creationDate = LocalDateTime.parse(creationDate),
-        modificationDate = LocalDateTime.parse(modificationDate),
+        modificationDate = if (modificationDate == null) null else LocalDateTime.parse(modificationDate),
         isDone = isDone
     )
 }
