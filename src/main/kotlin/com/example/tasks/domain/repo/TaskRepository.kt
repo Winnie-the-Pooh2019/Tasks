@@ -4,6 +4,7 @@ import com.example.tasks.domain.models.Task
 import org.springframework.data.jdbc.repository.query.Modifying
 import org.springframework.data.jdbc.repository.query.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.time.LocalDateTime
 import java.util.*
@@ -19,6 +20,12 @@ interface TaskRepository : CrudRepository<Task, Int> {
 
     @Query("select * from tasks where is_done = :isDone")
     fun findAllByDone(isDone: Boolean): Optional<List<Task>>
+
+    @Query("select count(*) from tasks")
+    fun countRows(): Int
+
+    @Query("select * from tasks order by id limit :limit offset :offset")
+    fun findPaginatedTasks(@Param("limit") limit: Int, @Param("offset") offset: Int): Optional<List<Task>>
 
     @Modifying
     @Query("update tasks set name = :name, modification_date = :modificationDate where id = :id")

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:hx="http://www.thymeleaf.org/hx">
+<head>
+    <!-- Include necessary CSS and JS libraries here -->
+    <link rel="stylesheet" href="/path/to/bootstrap.min.css">
+    <script src="/path/to/htmx.min.js"></script>
+</head>
+<body>
+<h1>Todo List</h1>
+
+<!-- Create Task Form -->
+<form th:action="@{/addTask}" th:object="${newTask}" method="post" hx-post="/addTask">
+    <label for="name">Name:</label>
+    <input type="text" id="name" th:field="*{name}" required>
+    <label for="description">Description:</label>
+    <input type="text" id="description" th:field="*{description}">
+    <input type="submit" value="Create Task">
+</form>
+
+<!-- Task Table -->
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Creation Date</th>
+        <th>Modification Date</th>
+        <th>Is Done</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate over tasks and display them -->
+    <tr th:each="task : ${tasks}">
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.description}"></td>
+        <td th:text="${task.creationDate}"></td>
+        <td th:text="${task.modificationDate}"></td>
+        <td th:text="${task.isDone} ? 'Yes' : 'No'"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Pagination, Sorting, Filtering, and Search can be added using HTMX and Spring Boot APIs -->
+
+</body>
+</html>

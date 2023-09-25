@@ -16,6 +16,25 @@ class TaskService(
     @Autowired
     private val taskRepository: TaskRepository
 ) {
+    fun getAll() = taskRepository.findAll()
+
+    fun getById(id: String): Task? {
+        val taskO = taskRepository.findById(UUID.fromString(id))
+
+        return if (taskO.isEmpty)
+            null
+        else
+            taskO.get()
+    }
+
+    @Transactional
+    fun getPaginatedTasks(page: Int, pageSize: Int): Page<Task> {
+        val tasks = taskRepository.findPaginatedTasks(pageSize, (page - 1) * pageSize).get()
+        val count = taskRepository.count()
+
+        return Page(tasks, page, count.toInt())
+    }
+
     @Throws(DbActionExecutionException::class)
     fun createTask(taskDto: TaskDto): Task = taskRepository.save(taskDto.toModel())
 
@@ -71,4 +90,10 @@ class TaskService(
     }
 
     fun dropTable() = taskRepository.deleteAll()
+
+    data class Page<T>(
+        val content: List<T>,
+        val currentPage: Int,
+        val totalPages: Int
+    )
 }
