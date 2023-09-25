@@ -11,6 +11,8 @@ import org.junit.jupiter.api.assertThrows
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.relational.core.conversion.DbActionExecutionException
+import java.util.*
+import kotlin.NoSuchElementException
 
 @SpringBootTest
 class TaskRepositoryTest(
@@ -130,8 +132,8 @@ class TaskRepositoryTest(
         val newName = "new name"
 
         taskRepository.save(task)
-        taskRepository.updateNameById(newName, Task.now(), "fake id")
-        val message = assertThrows<Exception> { taskRepository.findById("fake id").get() }
+        taskRepository.updateNameById(newName, Task.now(), UUID.fromString("fake id"))
+        val message = assertThrows<Exception> { taskRepository.findById(UUID.fromString("fake id")).get() }
 
         logger.warn { message }
     }
@@ -177,8 +179,8 @@ class TaskRepositoryTest(
         )
 
         taskRepository.save(task)
-        taskRepository.updateIsDoneBy(true, Task.now(), "fake id")
-        val message = assertThrows<NoSuchElementException> { taskRepository.findById("fake id").get() }
+        taskRepository.updateIsDoneBy(true, Task.now(), UUID.fromString("fake id"))
+        val message = assertThrows<NoSuchElementException> { taskRepository.findById(UUID.fromString("fake id")).get() }
 
         logger.warn { message }
     }

@@ -12,7 +12,7 @@ import java.util.*
 interface TaskRepository : CrudRepository<Task, Int> {
 
     @Query("select * from tasks where id = :id")
-    fun findById(id: String): Optional<Task>
+    fun findById(id: UUID): Optional<Task>
 
     @Query("select * from tasks where name = :name")
     fun findByName(name: String): Optional<Task>
@@ -22,13 +22,13 @@ interface TaskRepository : CrudRepository<Task, Int> {
 
     @Modifying
     @Query("update tasks set name = :name, modification_date = :modificationDate where id = :id")
-    fun updateNameById(name: String, modificationDate: LocalDateTime, id: String)
+    fun updateNameById(name: String, modificationDate: LocalDateTime, id: UUID)
 
     @Modifying
     @Query("update tasks set description = :description, modification_date = :modificationDate where id = :id")
-    fun updateDescriptionById(description: String, modificationDate: LocalDateTime, id: String)
+    fun updateDescriptionById(description: String, modificationDate: LocalDateTime, id: UUID)
 
     @Modifying
     @Query("update tasks set is_done = :isDone, modification_date = :modificationDate where id = :id")
-    fun updateIsDoneBy(isDone: Boolean, modificationDate: LocalDateTime, id: String)
+    fun updateIsDoneBy(isDone: Boolean, modificationDate: LocalDateTime, id: UUID)
 }

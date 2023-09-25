@@ -15,7 +15,7 @@ class PersistenceConfig {
         return BeforeConvertCallback<Task> { task: Task ->
             if (task.id == null)
                 return@BeforeConvertCallback Task(
-                    id = UUID.randomUUID().toString(),
+                    id = UUID.randomUUID(),
                     name = task.name,
                     description = task.description,
                     creationDate = task.creationDate,

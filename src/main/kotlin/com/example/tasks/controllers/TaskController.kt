@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import java.lang.IllegalArgumentException
 
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api/v1/tasks")
 class TaskController(
     @Autowired
     private val taskService: TaskService
@@ -20,28 +20,29 @@ class TaskController(
     fun handleNoSuchElement(exception: NoSuchElementException) = ResponseEntity(exception.message, HttpStatus.NOT_FOUND)
 
     @ExceptionHandler(DbActionExecutionException::class)
-    fun handleIllegalArgument(exception: IllegalArgumentException) = ResponseEntity(exception.message, HttpStatus.CONFLICT)
+    fun handleIllegalArgument(exception: IllegalArgumentException) =
+        ResponseEntity(exception.message, HttpStatus.CONFLICT)
 
-    @PostMapping("create")
+    @PostMapping
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     fun createTask(@RequestBody taskDto: TaskDto): Task = taskService.createTask(taskDto)
 
-    @PutMapping("put")
+    @PutMapping
     @ResponseBody
     fun putTask(@RequestBody taskDto: TaskDto): Task = taskService.updateTask(taskDto)
 
-    @PatchMapping("patch/name")
+    @PatchMapping("name/{id}")
     @ResponseBody
-    fun patchNameTask(@RequestParam id: String, @RequestBody name: String): Task = taskService.updateTaskName(id, name)
+    fun patchNameTask(@PathVariable id: String, @RequestBody name: String): Task = taskService.updateTaskName(id, name)
 
-    @PatchMapping("patch/description")
+    @PatchMapping("description/{id}")
     @ResponseBody
-    fun patchDescriptionTask(@RequestParam id: String, @RequestBody description: String): Task =
+    fun patchDescriptionTask(@PathVariable id: String, @RequestBody description: String): Task =
         taskService.updateTaskDescription(id, description)
 
-    @PatchMapping("patch/done")
+    @PatchMapping("done/{id}")
     @ResponseBody
-    fun patchDoneTask(@RequestParam id: String, @RequestBody isDone: Boolean): Task =
+    fun patchDoneTask(@PathVariable id: String, @RequestBody isDone: Boolean): Task =
         taskService.updateTaskDone(id, isDone)
 }

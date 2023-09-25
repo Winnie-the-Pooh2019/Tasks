@@ -5,6 +5,15 @@ plugins {
     id("io.spring.dependency-management") version "1.1.3"
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
+
+    id("org.flywaydb.flyway") version "9.22.1"
+}
+
+flyway {
+    url = "jdbc:postgresql://localhost:5432/postgres"
+    user = "postgres"
+    password = "1234"
+    cleanDisabled = false
 }
 
 group = "com.example"
@@ -29,10 +38,10 @@ dependencies {
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
+    implementation("org.flywaydb:flyway-core")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.postgresql:postgresql")
-//    implementation("org.flywaydb:flyway-core")
 
 //    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     testImplementation("io.rest-assured:spring-mock-mvc:3.0.0")

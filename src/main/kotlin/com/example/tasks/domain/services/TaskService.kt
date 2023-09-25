@@ -8,6 +8,7 @@ import org.springframework.data.relational.core.conversion.DbActionExecutionExce
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
+import java.util.*
 import kotlin.NoSuchElementException
 
 @Service
@@ -21,7 +22,7 @@ class TaskService(
     @Transactional
     @Throws(NoSuchElementException::class, DbActionExecutionException::class)
     fun updateTask(taskDto: TaskDto): Task {
-        if (taskDto.id == null || taskRepository.findById(taskDto.id).isEmpty)
+        if (taskDto.id == null || taskRepository.findById(UUID.fromString(taskDto.id)).isEmpty)
             throw NoSuchElementException("No id is provided or id is corrupted")
 
         return taskRepository.save(taskDto.toModel())
@@ -39,34 +40,34 @@ class TaskService(
     @Transactional
     @Throws(NoSuchElementException::class, DbActionExecutionException::class)
     fun updateTaskName(id: String, name: String): Task {
-        if (taskRepository.findById(id).isEmpty)
+        if (taskRepository.findById(UUID.fromString(id)).isEmpty)
             throw NoSuchElementException("No id is provided or id is corrupted")
 
-        taskRepository.updateNameById(name, LocalDateTime.now(), id)
+        taskRepository.updateNameById(name, LocalDateTime.now(), UUID.fromString(id))
 
-        return taskRepository.findById(id).get()
+        return taskRepository.findById(UUID.fromString(id)).get()
     }
 
     @Transactional
     @Throws(NoSuchElementException::class)
     fun updateTaskDescription(id: String, description: String): Task {
-        if (taskRepository.findById(id).isEmpty)
+        if (taskRepository.findById(UUID.fromString(id)).isEmpty)
             throw NoSuchElementException("No id is provided or id is corrupted")
 
-        taskRepository.updateDescriptionById(description, LocalDateTime.now(), id)
+        taskRepository.updateDescriptionById(description, LocalDateTime.now(), UUID.fromString(id))
 
-        return taskRepository.findById(id).get()
+        return taskRepository.findById(UUID.fromString(id)).get()
     }
 
     @Transactional
     @Throws(NoSuchElementException::class)
     fun updateTaskDone(id: String, isDone: Boolean): Task {
-        if (taskRepository.findById(id).isEmpty)
+        if (taskRepository.findById(UUID.fromString(id)).isEmpty)
             throw NoSuchElementException("No id is provided or id is corrupted")
 
-        taskRepository.updateIsDoneBy(isDone, LocalDateTime.now(), id)
+        taskRepository.updateIsDoneBy(isDone, LocalDateTime.now(), UUID.fromString(id))
 
-        return taskRepository.findById(id).get()
+        return taskRepository.findById(UUID.fromString(id)).get()
     }
 
     fun dropTable() = taskRepository.deleteAll()

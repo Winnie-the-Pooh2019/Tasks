@@ -2,6 +2,7 @@ package com.example.tasks.domain.dto
 
 import com.example.tasks.domain.models.Task
 import java.time.LocalDateTime
+import java.util.*
 
 data class TaskDto(
     val id: String? = null,
@@ -12,7 +13,7 @@ data class TaskDto(
     val isDone: Boolean = false
 ) {
     fun toModel(): Task = Task(
-        id = id,
+        id = UUID.fromString(id),
         name = name,
         description = description,
         creationDate = LocalDateTime.parse(creationDate),
