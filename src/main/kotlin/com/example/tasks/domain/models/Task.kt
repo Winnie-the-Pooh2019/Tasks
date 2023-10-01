@@ -1,5 +1,6 @@
 package com.example.tasks.domain.models
 
+import com.example.tasks.domain.dto.TaskDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
@@ -31,4 +32,13 @@ data class Task(
             return now.minusNanos(now.nano.toLong())
         }
     }
+
+    fun toDto() = TaskDto(
+        id = id.toString(),
+        name = name,
+        description = description,
+        creationDate = creationDate.toString(),
+        modificationDate = modificationDate.toString(),
+        isDone = isDone
+    )
 }
