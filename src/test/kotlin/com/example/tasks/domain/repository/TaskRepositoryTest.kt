@@ -1,20 +1,24 @@
-package com.example.tasks
+package com.example.tasks.domain.repository
 
-import com.example.tasks.domain.repo.TaskRepository
 import com.example.tasks.domain.models.Task
 import io.github.oshai.kotlinlogging.KLogger
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Profile
 import org.springframework.data.relational.core.conversion.DbActionExecutionException
+import org.springframework.test.context.DynamicPropertyRegistry
+import org.springframework.test.context.DynamicPropertySource
+import org.springframework.test.context.jdbc.Sql
+import org.testcontainers.containers.PostgreSQLContainer
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.util.*
 import kotlin.NoSuchElementException
 
 @SpringBootTest
+@Testcontainers
+@Profile("test")
 class TaskRepositoryTest(
     @Autowired
     private val taskRepository: TaskRepository,
@@ -23,7 +27,6 @@ class TaskRepositoryTest(
 ) {
 
     @BeforeEach
-    @AfterEach
     fun setUp() = taskRepository.deleteAll()
 
     @Test
@@ -41,7 +44,6 @@ class TaskRepositoryTest(
         assertThat(reloaded.name).isEqualTo(task.name)
     }
 
-//    DbActionExecutionException
     @Test
     fun canNotSaveTheSame() {
         val task = Task(
@@ -131,9 +133,10 @@ class TaskRepositoryTest(
         )
         val newName = "new name"
 
+        val fakeId = UUID.randomUUID()
         taskRepository.save(task)
-        taskRepository.updateNameById(newName, Task.now(), UUID.fromString("fake id"))
-        val message = assertThrows<Exception> { taskRepository.findById(UUID.fromString("fake id")).get() }
+        taskRepository.updateNameById(newName, Task.now(), fakeId)
+        val message = assertThrows<Exception> { taskRepository.findById(fakeId).get() }
 
         logger.warn { message }
     }
@@ -178,9 +181,10 @@ class TaskRepositoryTest(
             creationDate = Task.now()
         )
 
+        val fakeId = UUID.randomUUID()
         taskRepository.save(task)
-        taskRepository.updateIsDoneBy(true, Task.now(), UUID.fromString("fake id"))
-        val message = assertThrows<NoSuchElementException> { taskRepository.findById(UUID.fromString("fake id")).get() }
+        taskRepository.updateIsDoneBy(true, Task.now(), fakeId)
+        val message = assertThrows<NoSuchElementException> { taskRepository.findById(fakeId).get() }
 
         logger.warn { message }
     }

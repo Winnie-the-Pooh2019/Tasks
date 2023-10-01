@@ -1,4 +1,4 @@
-package com.example.tasks
+package com.example.tasks.controllers
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc

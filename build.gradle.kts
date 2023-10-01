@@ -39,7 +39,7 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
     implementation("org.flywaydb:flyway-core")
-    implementation("org.webjars.bower:htmx.org:1.7.1")
+//    implementation("org.webjars.bower:htmx.org:1.7.1")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -54,6 +54,11 @@ dependencies {
     testImplementation("io.rest-assured:spring-web-test-client:5.3.2")
     testImplementation("io.rest-assured:kotlin-extensions:5.3.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.testcontainers:postgresql:1.17.6")
+    testImplementation("org.testcontainers:testcontainers:1.19.0")
+    testImplementation("org.testcontainers:junit-jupiter:1.19.0")
+    implementation("org.apache.groovy:groovy-all:4.0.15")
+
 }
 
 tasks.withType<KotlinCompile> {

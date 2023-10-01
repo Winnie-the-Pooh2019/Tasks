@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import java.lang.IllegalArgumentException
 
 @RestController
-@RequestMapping("/api/v1/tasks")
+@RequestMapping("/api/tasks")
 class TaskController(
     @Autowired
     private val taskService: TaskService

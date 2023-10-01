@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: Tasks
+  datasource:
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+  flyway:
+    locations:
+      - classpath:/db/migration
+      - classpath:/db/callback

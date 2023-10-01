@@ -1,6 +1,6 @@
 package com.example.tasks.domain.services
 
-import com.example.tasks.domain.repo.TaskRepository
+import com.example.tasks.domain.repository.TaskRepository
 import com.example.tasks.domain.dto.TaskDto
 import com.example.tasks.domain.models.Task
 import org.springframework.beans.factory.annotation.Autowired

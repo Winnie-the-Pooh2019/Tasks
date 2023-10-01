@@ -1,4 +1,4 @@
-package com.example.tasks.domain.repo
+package com.example.tasks.domain.repository
 
 import com.example.tasks.domain.models.Task
 import org.springframework.data.jdbc.repository.query.Modifying
