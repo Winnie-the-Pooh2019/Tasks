@@ -9,7 +9,7 @@
 </head>
 <body>
 <table>
-    <thead>
+    <thead hx-target="#table-body" hx-swap="beforeend" hx-get="/tasks" hx-trigger="load">
     <tr>
         <th>Id</th>
         <th>Name</th>
@@ -19,23 +19,9 @@
         <th>Is done</th>
     </tr>
     </thead>
-    <tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
+    <tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s" id="table-body" class="table-body">
     <!-- Здесь будут отображаться строки таблицы -->
-    <tr th:each="task: ${tasks}">
-        <td th:text="${task.id}"></td>
-        <td th:text="${task.name}"></td>
-        <td th:text="${task.description}"></td>
-        <td><input th:type="textfield" th:disabled="true" th:value="${#temporals.format(task.creationDate, 'yyyy.MM.dd HH:mm')}"></td>
-        <td><input th:type="textfield" th:disabled="true" th:value="${#temporals.format(task.modificationDate, 'yyyy.MM.dd HH:mm')}"></td>
-        <td>
-            <input type="checkbox" hx-post="/toggle/{id}" th:checked="${task.isDone}">
-        </td>
-        <td>
-            <button class="btn btn-danger" th:attr="hx-delete='/api/tasks/' + ${task.id}">
-                Delete
-            </button>
-        </td>
-    </tr>
+    <tr th:insert="fragment :: taskItem(${task})" th:each="task: ${tasks}" th:remove="tag"></tr>
     </tbody>
 </table>
 </body>

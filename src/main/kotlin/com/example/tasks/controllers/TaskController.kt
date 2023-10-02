@@ -49,4 +49,8 @@ class TaskController(
     @DeleteMapping("{id}", headers = ["HX-Request"])
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteTask(@PathVariable id: String) = taskService.deleteTask(id)
+
+//    @GetMapping(headers = ["HX-Request"])
+//    @ResponseBody(HttpStatus.OK)
+//    fun getTasks() = task
 }
