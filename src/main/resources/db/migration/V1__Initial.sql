@@ -20,3 +20,18 @@ values ('sample task 3', 'sample description 3', CURRENT_TIMESTAMP, false);
 
 insert into tasks (name, description, creation_date, is_done)
 values ('sample task 4', 'sample description 4', CURRENT_TIMESTAMP, false);
+
+insert into tasks (name, description, creation_date, is_done)
+values ('sample task 5', 'sample description 4', CURRENT_TIMESTAMP, false);
+
+insert into tasks (name, description, creation_date, is_done)
+values ('sample task 6', 'sample description 4', CURRENT_TIMESTAMP, false);
+
+insert into tasks (name, description, creation_date, is_done)
+values ('sample task 7', 'sample description 4', CURRENT_TIMESTAMP, false);
+
+insert into tasks (name, description, creation_date, is_done)
+values ('sample task 8', 'sample description 4', CURRENT_TIMESTAMP, false);
+
+insert into tasks (name, description, creation_date, is_done)
+values ('sample task 9', 'sample description 4', CURRENT_TIMESTAMP, false);
