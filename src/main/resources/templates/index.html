@@ -2,10 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>People List</title>
-    <!--    <script src="https://onpkg.com/htmx.org@1.6.1"></script> &lt;!&ndash; Include the HTMX library &ndash;&gt;-->
-
-
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
 </head>
 <body>
 <table>
@@ -19,9 +17,31 @@
         <th>Is done</th>
     </tr>
     </thead>
-    <tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s" id="table-body" class="table-body">
+<!--    <tbody hx-target="#table-body" hx-swap="beforeend" hx-get="/tasks/1" hx-trigger="load delay:1s"-->
+    <tbody hx-confirm="Are you sure?" hx-target="closest tr" hx-swap="outerHTML swap:1s" id="table-body" class="table-body"
+    >
     <!-- Здесь будут отображаться строки таблицы -->
-    <tr th:insert="fragment :: taskItem(${task})" th:each="task: ${tasks}" th:remove="tag"></tr>
+<!--    <tr th:insert="fragment :: taskItem(${task})" th:each="task: ${tasks}" th:remove="tag"></tr>-->
+    <tr hx-trigger="click" hx-get
+            th:each="task: ${tasks}" th:id="|row${task.id}|">
+        <td th:text="${task.id}"></td>
+        <td th:text="${task.name}"></td>
+        <td th:text="${task.description}"></td>
+        <td><input th:type="textfield" th:disabled="true" th:value="${#temporals.format(task.creationDate, 'yyyy.MM.dd HH:mm')}"></td>
+        <td><input th:type="textfield" th:disabled="true" th:value="${#temporals.format(task.modificationDate, 'yyyy.MM.dd HH:mm')}"></td>
+        <td>
+            <input type="checkbox" hx-post="/toggle/{id}" th:checked="${task.isDone}">
+        </td>
+        <td>
+            <button class="btn btn-danger" th:attr="hx-delete=|api/tasks/${task.id}|, hx-target=|#row${task.id}|" hx-swap="delete">
+                Delete
+            </button>
+
+            <!--            <button class="btn btn-danger" th:attr="hx-delete='/api/tasks/' + ${task.id}">-->
+            <!--                Delete-->
+            <!--            </button>-->
+        </td>
+    </tr>
     </tbody>
 </table>
 </body>
