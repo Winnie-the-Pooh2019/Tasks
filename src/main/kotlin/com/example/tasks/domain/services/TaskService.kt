@@ -4,6 +4,7 @@ import com.example.tasks.domain.repository.TaskRepository
 import com.example.tasks.domain.dto.TaskDto
 import com.example.tasks.domain.models.Task
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.dao.OptimisticLockingFailureException
 import org.springframework.data.relational.core.conversion.DbActionExecutionException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -37,6 +38,10 @@ class TaskService(
 
     @Throws(DbActionExecutionException::class)
     fun createTask(taskDto: TaskDto): Task = taskRepository.save(taskDto.toModel())
+
+    @Transactional
+    @Throws(IllegalArgumentException::class, OptimisticLockingFailureException::class)
+    fun deleteTask(id: String) = taskRepository.deleteById(UUID.fromString(id))
 
     @Transactional
     @Throws(NoSuchElementException::class, DbActionExecutionException::class)

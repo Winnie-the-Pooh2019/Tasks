@@ -25,10 +25,7 @@ class TaskMvcController(
 
     @GetMapping
     fun index(model: Model): String {
-        val tasks = taskService.getAll().map {
-            println(it.toDto())
-            it.toDto()
-        }
+        val tasks = taskService.getAll()
         model.addAttribute("tasks", tasks)
 
         return "index"

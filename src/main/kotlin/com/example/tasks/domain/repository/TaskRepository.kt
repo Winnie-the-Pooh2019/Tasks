@@ -38,4 +38,8 @@ interface TaskRepository : CrudRepository<Task, Int> {
     @Modifying
     @Query("update tasks set is_done = :isDone, modification_date = :modificationDate where id = :id")
     fun updateIsDoneBy(isDone: Boolean, modificationDate: LocalDateTime, id: UUID)
+
+    @Modifying
+    @Query("delete from tasks where id = :id")
+    fun deleteById(id: UUID)
 }

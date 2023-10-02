@@ -4,6 +4,7 @@ import com.example.tasks.domain.dto.TaskDto
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
+import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -17,6 +18,7 @@ data class Task(
     val description: String? = null,
 
     @Column("creation_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     val creationDate: LocalDateTime,
 
     @Column("modification_date")

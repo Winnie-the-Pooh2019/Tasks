@@ -45,4 +45,8 @@ class TaskController(
     @ResponseBody
     fun patchDoneTask(@PathVariable id: String, @RequestBody isDone: Boolean): Task =
         taskService.updateTaskDone(id, isDone)
+
+    @DeleteMapping("{id}", headers = ["HX-Request"])
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteTask(@PathVariable id: String) = taskService.deleteTask(id)
 }
